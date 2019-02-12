@@ -3,13 +3,15 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingService } from '../shopping-list/shopping.service';
 import { Subject } from 'rxjs';
+import { Http } from '@angular/http';
 
 @Injectable()
 export class RecipesService {
     recipeServiceChanged =  new Subject<Recipe[]>();
     selectedRecipe = new EventEmitter<Recipe>();
 
-    constructor(private slService: ShoppingService) {}
+    constructor(private slService: ShoppingService,
+                private http: Http) {}
 
     private recipes: Recipe[] = [
         new Recipe(
@@ -27,6 +29,11 @@ export class RecipesService {
              new Ingredient('beef', 5),
              new Ingredient('noodles', 30)])
     ];
+
+    setRecipes(fetchedRecipes: Recipe[]) {
+        this.recipes = fetchedRecipes;
+        this.recipeServiceChanged.next(this.recipes.slice());
+    }
 
     getRecipes() {
         return this.recipes.slice();
