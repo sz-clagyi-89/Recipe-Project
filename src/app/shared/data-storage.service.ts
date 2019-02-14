@@ -1,23 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { RecipesService } from '../recipes/recipes.service';
-import { map, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Recipe } from '../recipes/recipes.model';
+import { AuthService } from '../auth/auth.service';
+
 
 @Injectable()
 export class DataStorageService {
     constructor(private http: Http,
-                private recipeService: RecipesService) { }
+                private recipeService: RecipesService,
+                private authService: AuthService) { }
 
     saveRecipes() {
-        const recipes = this.recipeService.getRecipes();
-        const headers = new Headers({'Content-Type': 'application/json'});
-       return this.http.put('https://ng-recipe-book-95899.firebaseio.com/recipes.json', recipes);
+        // const headers = new Headers({'Content-Type': 'application/json'});
+        const token = this.authService.getToken();
+        return this.http.put('https://ng-recipe-book-95899.firebaseio.com/recipes.json?auth=' + token, this.recipeService.getRecipes());
     }
 
     fetchRecipes() {
-        return this.http.get('https://ng-recipe-book-95899.firebaseio.com/recipes.json')
+        const token = this.authService.getToken();
+        this.http.get('https://ng-recipe-book-95899.firebaseio.com/recipes.json?auth=' + token)
             .pipe(
                 map(
                     (response: Response) => {
@@ -36,18 +39,5 @@ export class DataStorageService {
                     this.recipeService.setRecipes(recipes);
                 }
             );
-            // .pipe(
-            //     map((response: Response) => {
-            //             const data = response.json();
-            //             for (const recipe of data) {
-            //                 recipe.name = 'FETCHED_' + recipe.name;
-            //             }
-            //             return data;
-            //         }
-            //     )
-            // )
-            // .pipe(catchError(error => {
-            //     return throwError('Something has gone wrong!');
-            // }));
     }
 }
