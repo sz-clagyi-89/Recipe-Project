@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { DataStorageService } from '../shared/data-storage.service';
-import { Response } from '@angular/http';
-import { RecipesService } from '../recipes/recipes.service';
-import { Recipe } from '../recipes/recipes.model';
-import { AuthService } from '../auth/auth.service';
+import { DataStorageService } from '../../shared/data-storage.service';
+
+import { RecipesService } from '../../recipes/recipes.service';
+import { AuthService } from '../../auth/auth.service';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 
 
 
@@ -22,7 +22,9 @@ export class HeaderComponent {
     onSave() {
         this.dataStorage.saveRecipes()
             .subscribe(
-                (response: Response) => { console.log(response); },
+                (response) => {
+                    console.log(response);
+                },
                 (error) => { console.log(error); }
             );
     }
@@ -33,5 +35,9 @@ export class HeaderComponent {
 
     onLogout() {
         this.authService.logut();
+    }
+
+    isAuthenticated() {
+        return this.authService.isAuthenticated();
     }
 }

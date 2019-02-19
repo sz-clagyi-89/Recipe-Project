@@ -3,7 +3,8 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingService } from '../shopping-list/shopping.service';
 import { Subject } from 'rxjs';
-import { Http } from '@angular/http';
+// import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class RecipesService {
@@ -11,7 +12,7 @@ export class RecipesService {
     selectedRecipe = new EventEmitter<Recipe>();
 
     constructor(private slService: ShoppingService,
-                private http: Http) {}
+                private http: HttpClient) {}
 
     private recipes: Recipe[] = [
         new Recipe(

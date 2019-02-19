@@ -26,7 +26,7 @@ export class AuthService {
                         .then(
                             (token: string) => {
                                 this.token = token;
-                                console.log(token);
+                                // console.log(token);
                             }
                         );
                     console.log(response);
