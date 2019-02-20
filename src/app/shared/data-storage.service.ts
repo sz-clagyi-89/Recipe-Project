@@ -15,22 +15,24 @@ export class DataStorageService {
 
     saveRecipes() {
         // const headers = new Headers({'Content-Type': 'application/json'});
-        const token = this.authService.getToken();
+        // const token = this.authService.getToken();
         // return this.httpClient.put('https://ng-recipe-book-95899.firebaseio.com/recipes.json', this.recipeService.getRecipes(), {
         //     observe: 'body',
         //     params: new HttpParams().set('auth', token)
         // });
-        const req = new HttpRequest('PUT', 'https://ng-recipe-book-95899.firebaseio.com/recipes.json', this.recipeService.getRecipes(), {reportProgress: true, params: new HttpParams().set('auth', token)})
+        const req = new HttpRequest('PUT', 'https://ng-recipe-book-95899.firebaseio.com/recipes.json', this.recipeService.getRecipes(), {
+            reportProgress: true}
+        );
         return this.httpClient.request(req);
     }
 
     fetchRecipes() {
-        const token = this.authService.getToken();
+        // const token = this.authService.getToken();
         // this.httpClient.get<Recipe[]>('https://ng-recipe-book-95899.firebaseio.com/recipes.json?auth=' + token)
         this.httpClient.get<Recipe[]>('https://ng-recipe-book-95899.firebaseio.com/recipes.json', {
             observe: 'body',
-            responseType: 'json',
-            params: new HttpParams().set('auth', token)
+            responseType: 'json'
+            // params: new HttpParams().set('auth', token)
         })
             .pipe(
                 map(
